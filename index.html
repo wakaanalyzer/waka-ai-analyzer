@@ -1,46 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waka AI Analyzer</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waka AI Analyzer</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
 <div class="container">
 
-    <h1>🤖 Waka AI Analyzer</h1>
-    <p>AI-powered GitHub Repository Analyzer</p>
+<header>
+<h1>🤖 Waka AI Analyzer</h1>
+<p>AI-Powered GitHub Repository Analyzer</p>
+</header>
 
-    <div class="card">
-        <input
-            type="text"
-            id="repoUrl"
-            placeholder="https://github.com/owner/repository">
+<div class="card search-card">
+<input
+type="text"
+id="repoUrl"
+placeholder="https://github.com/owner/repository">
 
-        <button onclick="analyzeRepo()">
-            Analyze Repository
-        </button>
-    </div>
+<button onclick="analyzeRepo()">
+Analyze Repository
+</button>
+</div>
 
-    <div class="card">
-        <h2>Overall Score</h2>
-        <h1 id="score">--</h1>
-    </div>
+<div class="grid">
 
-    <div class="card">
-        <h2>Repository Statistics</h2>
+<div class="card score-card">
+<h2>Overall Score</h2>
+<h1 id="score">--</h1>
+</div>
 
-        <p><strong>Repository Size:</strong> <span id="files">--</span></p>
+<div class="card">
+<h2>Repository Info</h2>
 
-        <p><strong>Watchers:</strong> <span id="lines">--</span></p>
+<p><strong>Name:</strong> <span id="repoName">--</span></p>
+<p><strong>Owner:</strong> <span id="owner">--</span></p>
+<p><strong>Language:</strong> <span id="languages">--</span></p>
+<p><strong>Stars:</strong> <span id="stars">--</span></p>
+<p><strong>Forks:</strong> <span id="forks">--</span></p>
+<p><strong>Watchers:</strong> <span id="lines">--</span></p>
+<p><strong>Open Issues:</strong> <span id="issues">--</span></p>
+<p><strong>Repository Size:</strong> <span id="files">--</span></p>
+<p><strong>Updated:</strong> <span id="updated">--</span></p>
 
-        <p><strong>Main Language:</strong> <span id="languages">--</span></p>
+</div>
 
-        <p><strong>Open Issues:</strong> <span id="issues">--</span></p>
-    </div>
+<div class="card">
+<h2>Description</h2>
+<p id="description">
+Repository description will appear here.
+</p>
+</div>
+
+<div class="card">
+<h2>AI Score Breakdown</h2>
+<canvas id="scoreChart"></canvas>
+</div>
+
+</div>
 
 </div>
 
