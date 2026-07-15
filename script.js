@@ -1,85 +1,166 @@
-document.addEventListener("DOMContentLoaded", function () {
+// Wait until the page is loaded
+document.addEventListener("DOMContentLoaded", () => {
 
-  const button = document.getElementById("analyze-btn");
-  const input = document.getElementById("text-input");
-  const result = document.getElementById("result");
-  const score = document.getElementById("score");
+    const analyzeBtn = document.getElementById("analyzeBtn");
+    const reviewBtn = document.getElementById("reviewBtn");
 
-  button.addEventListener("click", function () {
+    const sentimentText = document.getElementById("sentimentText");
+    const codeText = document.getElementById("codeText");
 
-    const text = input.value.toLowerCase();
+    const sentimentResult = document.getElementById("sentimentResult");
+    const reviewResult = document.getElementById("reviewResult");
 
-    if (text.trim() === "") {
-      result.textContent = "Please enter some text.";
-      score.textContent = "0";
-      return;
-    }
+    // ----------------------------
+    // Sentiment Analyzer
+    // ----------------------------
 
-    if (
-      text.includes("good") ||
-      text.includes("great") ||
-      text.includes("love") ||
-      text.includes("awesome") ||
-      text.includes("excellent") ||
-      text.includes("amazing")
-    ) {
-      result.textContent = "😊 Positive sentiment detected";
-      result.style.color = "#00d084";
-      score.textContent = "95";
-    }
-    else if (
-      text.includes("bad") ||
-      text.includes("terrible") ||
-      text.includes("hate") ||
-      text.includes("awful") ||
-      text.includes("worst")
-    ) {
-      result.textContent = "☹️ Negative sentiment detected";
-      result.style.color = "#ff4d4d";
-      score.textContent = "35";
-    }
-    else {
-      result.textContent = "😐 Neutral sentiment detected";
-      result.style.color = "#ffd43b";
-      score.textContent = "70";
-    }
+    analyzeBtn.addEventListener("click", () => {
 
-  });
+        const text = sentimentText.value.trim();
 
-});
-// AI Code Review
-const reviewBtn = document.getElementById("review-btn");
-const codeInput = document.getElementById("code-input");
-const reviewResult = document.getElementById("review-result");
+        if (text === "") {
+            sentimentResult.innerHTML =
+                "⚠️ Please enter some text.";
+            return;
+        }
 
-reviewBtn.addEventListener("click", function () {
+        sentimentResult.classList.add("loading");
+        sentimentResult.innerHTML = "⏳ Analyzing sentiment...";
 
-    const code = codeInput.value;
+        setTimeout(() => {
 
-    if (code.trim() === "") {
-        reviewResult.textContent = "Please paste some code.";
-        reviewResult.style.color = "#ffd43b";
-        return;
-    }
+            sentimentResult.classList.remove("loading");
 
-    let feedback = [];
+            const positiveWords = [
+                "good",
+                "great",
+                "love",
+                "excellent",
+                "happy",
+                "awesome",
+                "amazing",
+                "perfect"
+            ];
 
-    if (code.includes("var ")) {
-        feedback.push("⚠️ Use 'let' or 'const' instead of 'var'.");
-    }
+            const negativeWords = [
+                "bad",
+                "hate",
+                "terrible",
+                "sad",
+                "awful",
+                "poor",
+                "worst",
+                "angry"
+            ];
 
-    if (code.includes("console.log")) {
-        feedback.push("ℹ️ Remove console.log statements before production.");
-    }
+            let score = 0;
 
-    if (code.length > 500) {
-        feedback.push("📏 Consider breaking this code into smaller functions.");
-    }
+            const words = text.toLowerCase().split(/\s+/);
 
-    if (feedback.length === 0) {
-        feedback.push("✅ Great! No common issues were found.");
-    }
+            words.forEach(word => {
 
-    reviewResult.innerHTML = feedback.join("<br>");
-    reviewResult.style.color = "#00d084";
+                if (positiveWords.includes(word))
+                    score++;
+
+                if (negativeWords.includes(word))
+                    score--;
+
+            });
+
+            if (score > 0) {
+
+                sentimentResult.innerHTML =
+                    "😊 <strong>Positive</strong><br>Confidence: 93%";
+
+            } else if (score < 0) {
+
+                sentimentResult.innerHTML =
+                    "😞 <strong>Negative</strong><br>Confidence: 91%";
+
+            } else {
+
+                sentimentResult.innerHTML =
+                    "😐 <strong>Neutral</strong><br>Confidence: 88%";
+
+            }
+
+        }, 1500);
+
+    });
+
+    // ----------------------------
+    // AI Code Review
+    // ----------------------------
+
+    reviewBtn.addEventListener("click", () => {
+
+        const code = codeText.value.trim();
+
+        if (code === "") {
+
+            reviewResult.innerHTML =
+                "⚠️ Please paste some code.";
+
+            return;
+
+        }
+
+        reviewResult.classList.add("loading");
+
+        reviewResult.innerHTML =
+            "⏳ Reviewing code...";
+
+        setTimeout(() => {
+
+            reviewResult.classList.remove("loading");
+
+            let issues = [];
+
+            if (!code.includes(";"))
+                issues.push("• Missing semicolons.");
+
+            if (code.includes("var"))
+                issues.push("• Use let or const instead of var.");
+
+            if (code.length < 50)
+                issues.push("• Code snippet is too short.");
+
+            if (issues.length === 0) {
+
+                reviewResult.innerHTML =
+                    "✅ <strong>Excellent Code!</strong><br>No major issues found.";
+
+            } else {
+
+                reviewResult.innerHTML =
+                    "<strong>⚠️ Suggestions</strong><br><br>" +
+                    issues.join("<br>");
+
+            }
+
+        }, 1800);
+
+    });
+
+    // ----------------------------
+    // Animate Score
+    // ----------------------------
+
+    const scoreElement = document.getElementById("score");
+
+    let value = 0;
+
+    const target = 95;
+
+    const timer = setInterval(() => {
+
+        value++;
+
+        scoreElement.textContent = value;
+
+        if (value >= target)
+            clearInterval(timer);
+
+    }, 20);
+
 });
