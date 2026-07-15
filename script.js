@@ -1,60 +1,49 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const analyzeBtn = document.getElementById("analyze-btn");
-    const textInput = document.getElementById("text-input");
-    const result = document.getElementById("result");
-    const score = document.getElementById("score");
+document.addEventListener("DOMContentLoaded", function () {
 
-    const positiveWords = [
-        "good","great","excellent","love","happy",
-        "awesome","fantastic","amazing","nice","wonderful"
-    ];
+  const button = document.getElementById("analyze-btn");
+  const input = document.getElementById("text-input");
+  const result = document.getElementById("result");
+  const score = document.getElementById("score");
 
-    const negativeWords = [
-        "bad","terrible","awful","hate","sad",
-        "poor","worst","horrible","angry","disappointed"
-    ];
+  button.addEventListener("click", function () {
 
-    analyzeBtn.addEventListener("click", () => {
+    const text = input.value.toLowerCase();
 
-        const text = textInput.value.toLowerCase();
+    if (text.trim() === "") {
+      result.textContent = "Please enter some text.";
+      score.textContent = "0";
+      return;
+    }
 
-        if(text.trim()===""){
-            result.textContent="Please enter some text.";
-            score.textContent="0";
-            return;
-        }
+    if (
+      text.includes("good") ||
+      text.includes("great") ||
+      text.includes("love") ||
+      text.includes("awesome") ||
+      text.includes("excellent") ||
+      text.includes("amazing")
+    ) {
+      result.textContent = "😊 Positive sentiment detected";
+      result.style.color = "#00d084";
+      score.textContent = "95";
+    }
+    else if (
+      text.includes("bad") ||
+      text.includes("terrible") ||
+      text.includes("hate") ||
+      text.includes("awful") ||
+      text.includes("worst")
+    ) {
+      result.textContent = "☹️ Negative sentiment detected";
+      result.style.color = "#ff4d4d";
+      score.textContent = "35";
+    }
+    else {
+      result.textContent = "😐 Neutral sentiment detected";
+      result.style.color = "#ffd43b";
+      score.textContent = "70";
+    }
 
-        let positive=0;
-        let negative=0;
-
-        positiveWords.forEach(word=>{
-            if(text.includes(word)) positive++;
-        });
-
-        negativeWords.forEach(word=>{
-            if(text.includes(word)) negative++;
-        });
-
-        if(positive>negative){
-
-            result.innerHTML="😊 Positive sentiment detected";
-            result.style.color="#00d084";
-            score.textContent="95";
-
-        }else if(negative>positive){
-
-            result.innerHTML="😞 Negative sentiment detected";
-            result.style.color="#ff4d4d";
-            score.textContent="35";
-
-        }else{
-
-            result.innerHTML="😐 Neutral sentiment detected";
-            result.style.color="#ffd43b";
-            score.textContent="70";
-
-        }
-
-    });
+  });
 
 });
