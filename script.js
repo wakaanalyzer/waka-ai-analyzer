@@ -1,166 +1,58 @@
-// Wait until the page is loaded
-document.addEventListener("DOMContentLoaded", () => {
+async function analyzeRepo() {
+    const repoUrl = document.getElementById("repoUrl").value.trim();
 
-    const analyzeBtn = document.getElementById("analyzeBtn");
-    const reviewBtn = document.getElementById("reviewBtn");
+    if (!repoUrl) {
+        alert("Please enter a GitHub repository URL.");
+        return;
+    }
 
-    const sentimentText = document.getElementById("sentimentText");
-    const codeText = document.getElementById("codeText");
+    // Extract owner and repository name
+    const match = repoUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
 
-    const sentimentResult = document.getElementById("sentimentResult");
-    const reviewResult = document.getElementById("reviewResult");
+    if (!match) {
+        alert("Invalid GitHub repository URL.");
+        return;
+    }
 
-    // ----------------------------
-    // Sentiment Analyzer
-    // ----------------------------
+    const owner = match[1];
+    const repo = match[2].replace(".git", "");
 
-    analyzeBtn.addEventListener("click", () => {
+    try {
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
 
-        const text = sentimentText.value.trim();
-
-        if (text === "") {
-            sentimentResult.innerHTML =
-                "⚠️ Please enter some text.";
-            return;
+        if (!response.ok) {
+            throw new Error("Repository not found.");
         }
 
-        sentimentResult.classList.add("loading");
-        sentimentResult.innerHTML = "⏳ Analyzing sentiment...";
+        const data = await response.json();
 
-        setTimeout(() => {
+        // Repository statistics
+        document.getElementById("files").textContent =
+            `${(data.size / 1024).toFixed(2)} MB`;
 
-            sentimentResult.classList.remove("loading");
+        document.getElementById("lines").textContent =
+            data.watchers_count;
 
-            const positiveWords = [
-                "good",
-                "great",
-                "love",
-                "excellent",
-                "happy",
-                "awesome",
-                "amazing",
-                "perfect"
-            ];
+        document.getElementById("languages").textContent =
+            data.language || "Unknown";
 
-            const negativeWords = [
-                "bad",
-                "hate",
-                "terrible",
-                "sad",
-                "awful",
-                "poor",
-                "worst",
-                "angry"
-            ];
+        document.getElementById("issues").textContent =
+            data.open_issues_count;
 
-            let score = 0;
+        // AI Score Calculation
+        let score = 50;
 
-            const words = text.toLowerCase().split(/\s+/);
+        if (data.stargazers_count > 10) score += 10;
+        if (data.watchers_count > 5) score += 10;
+        if (data.forks_count > 5) score += 10;
+        if (data.open_issues_count < 10) score += 10;
+        if (data.language) score += 10;
 
-            words.forEach(word => {
+        if (score > 100) score = 100;
 
-                if (positiveWords.includes(word))
-                    score++;
+        document.getElementById("score").textContent = score;
 
-                if (negativeWords.includes(word))
-                    score--;
-
-            });
-
-            if (score > 0) {
-
-                sentimentResult.innerHTML =
-                    "😊 <strong>Positive</strong><br>Confidence: 93%";
-
-            } else if (score < 0) {
-
-                sentimentResult.innerHTML =
-                    "😞 <strong>Negative</strong><br>Confidence: 91%";
-
-            } else {
-
-                sentimentResult.innerHTML =
-                    "😐 <strong>Neutral</strong><br>Confidence: 88%";
-
-            }
-
-        }, 1500);
-
-    });
-
-    // ----------------------------
-    // AI Code Review
-    // ----------------------------
-
-    reviewBtn.addEventListener("click", () => {
-
-        const code = codeText.value.trim();
-
-        if (code === "") {
-
-            reviewResult.innerHTML =
-                "⚠️ Please paste some code.";
-
-            return;
-
-        }
-
-        reviewResult.classList.add("loading");
-
-        reviewResult.innerHTML =
-            "⏳ Reviewing code...";
-
-        setTimeout(() => {
-
-            reviewResult.classList.remove("loading");
-
-            let issues = [];
-
-            if (!code.includes(";"))
-                issues.push("• Missing semicolons.");
-
-            if (code.includes("var"))
-                issues.push("• Use let or const instead of var.");
-
-            if (code.length < 50)
-                issues.push("• Code snippet is too short.");
-
-            if (issues.length === 0) {
-
-                reviewResult.innerHTML =
-                    "✅ <strong>Excellent Code!</strong><br>No major issues found.";
-
-            } else {
-
-                reviewResult.innerHTML =
-                    "<strong>⚠️ Suggestions</strong><br><br>" +
-                    issues.join("<br>");
-
-            }
-
-        }, 1800);
-
-    });
-
-    // ----------------------------
-    // Animate Score
-    // ----------------------------
-
-    const scoreElement = document.getElementById("score");
-
-    let value = 0;
-
-    const target = 95;
-
-    const timer = setInterval(() => {
-
-        value++;
-
-        scoreElement.textContent = value;
-
-        if (value >= target)
-            clearInterval(timer);
-
-    }, 20);
-
-});
+    } catch (error) {
+        alert(error.message);
+    }
+}
