@@ -1,68 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Waka AI Analyzer</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waka AI Analyzer</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
+
 <body>
 
 <header class="header">
-<h1>🤖 Waka AI Analyzer</h1>
-<p>AI-powered Analytics Dashboard</p>
+    <h1><i class="fa-solid fa-robot"></i> Waka AI Analyzer</h1>
+    <p>AI Powered Analytics Dashboard</p>
 </header>
 
-<div class="container">
+<main class="container">
 
-<div class="card">
-<h2>Overall Score</h2>
-<div class="digit" id="score">95</div>
-</div>
+    <!-- Overall Score -->
+    <section class="card score-card">
 
-<div class="card">
-<h2>Statistics</h2>
-<div class="row"><span>Total Files</span><strong>25</strong></div>
-<div class="row"><span>Lines of Code</span><strong>12,450</strong></div>
-<div class="row"><span>Languages</span><strong>5</strong></div>
-<div class="row"><span>Issues Found</span><strong>3</strong></div>
-</div>
+        <h2>Overall Score</h2>
 
-<div class="card">
-<h2>📝 Sentiment Analyzer</h2>
+        <div class="score-circle">
+            <span id="score">95</span>
+        </div>
 
-<textarea
-id="text-input"
-placeholder="Type or paste text here..."
-rows="6"></textarea>
+    </section>
 
-<br><br>
+    <!-- Statistics -->
 
-<button id="analyze-btn">
-Analyze Text
-</button>
+    <section class="card">
 
-<h3 id="result">Result will appear here...</h3>
+        <h2>📊 Statistics</h2>
 
-</div>
+        <div class="stat">
+            <div class="row">
+                <span>Total Files</span>
+                <strong>25</strong>
+            </div>
 
-</div>
+            <div class="progress">
+                <div class="fill" style="width:85%"></div>
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="row">
+                <span>Lines of Code</span>
+                <strong>12,450</strong>
+            </div>
+
+            <div class="progress">
+                <div class="fill" style="width:95%"></div>
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="row">
+                <span>Languages</span>
+                <strong>5</strong>
+            </div>
+
+            <div class="progress">
+                <div class="fill" style="width:70%"></div>
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="row">
+                <span>Issues Found</span>
+                <strong>3</strong>
+            </div>
+
+            <div class="progress">
+                <div class="fill danger" style="width:30%"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Sentiment Analyzer -->
+
+    <section class="card">
+
+        <h2>😊 Sentiment Analyzer</h2>
+
+        <textarea id="sentimentText"
+        placeholder="Type text here..."></textarea>
+
+        <button id="analyzeBtn">
+            Analyze Text
+        </button>
+
+        <div class="result" id="sentimentResult">
+
+            Result will appear here...
+
+        </div>
+
+    </section>
+
+    <!-- AI Code Review -->
+
+    <section class="card">
+
+        <h2>💻 AI Code Review</h2>
+
+        <textarea id="codeText"
+        placeholder="Paste your code here..."></textarea>
+
+        <button id="reviewBtn">
+            Review Code
+        </button>
+
+        <div class="result" id="reviewResult">
+
+            Result will appear here...
+
+        </div>
+
+    </section>
+
+    <!-- Recent Activity -->
+
+    <section class="card">
+
+        <h2>📈 Recent Activity</h2>
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>Task</th>
+                <th>Status</th>
+                <th>Score</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>Sentiment Analysis</td>
+
+                <td>Completed</td>
+
+                <td>Positive</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Code Review</td>
+
+                <td>Completed</td>
+
+                <td>95%</td>
+
+            </tr>
+
+            <tr>
+
+                <td>Repository Scan</td>
+
+                <td>Running</td>
+
+                <td>--</td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+</main>
 
 <script src="script.js"></script>
 
 </body>
 </html>
-<div class="card">
-    <h2>💻 AI Code Review</h2>
-
-    <textarea
-        id="code-input"
-        rows="10"
-        placeholder="Paste your code here..."></textarea>
-
-    <br><br>
-
-    <button id="review-btn">Review Code</button>
-
-    <h3 id="review-result">Review will appear here...</h3>
-</div>
