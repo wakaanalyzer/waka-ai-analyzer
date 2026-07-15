@@ -47,3 +47,39 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+// AI Code Review
+const reviewBtn = document.getElementById("review-btn");
+const codeInput = document.getElementById("code-input");
+const reviewResult = document.getElementById("review-result");
+
+reviewBtn.addEventListener("click", function () {
+
+    const code = codeInput.value;
+
+    if (code.trim() === "") {
+        reviewResult.textContent = "Please paste some code.";
+        reviewResult.style.color = "#ffd43b";
+        return;
+    }
+
+    let feedback = [];
+
+    if (code.includes("var ")) {
+        feedback.push("⚠️ Use 'let' or 'const' instead of 'var'.");
+    }
+
+    if (code.includes("console.log")) {
+        feedback.push("ℹ️ Remove console.log statements before production.");
+    }
+
+    if (code.length > 500) {
+        feedback.push("📏 Consider breaking this code into smaller functions.");
+    }
+
+    if (feedback.length === 0) {
+        feedback.push("✅ Great! No common issues were found.");
+    }
+
+    reviewResult.innerHTML = feedback.join("<br>");
+    reviewResult.style.color = "#00d084";
+});
