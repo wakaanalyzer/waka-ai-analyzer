@@ -7,15 +7,19 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header class="header">
 <h1>🤖 Waka AI Analyzer</h1>
 <p>AI-powered Analytics Dashboard</p>
 </header>
+
 <div class="container">
+
 <div class="card">
 <h2>Overall Score</h2>
-<div class="digit">95</div>
+<div class="digit" id="score">95</div>
 </div>
+
 <div class="card">
 <h2>Statistics</h2>
 <div class="row"><span>Total Files</span><strong>25</strong></div>
@@ -23,6 +27,28 @@
 <div class="row"><span>Languages</span><strong>5</strong></div>
 <div class="row"><span>Issues Found</span><strong>3</strong></div>
 </div>
+
+<div class="card">
+<h2>📝 Sentiment Analyzer</h2>
+
+<textarea
+id="text-input"
+placeholder="Type or paste text here..."
+rows="6"></textarea>
+
+<br><br>
+
+<button id="analyze-btn">
+Analyze Text
+</button>
+
+<h3 id="result">Result will appear here...</h3>
+
 </div>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
